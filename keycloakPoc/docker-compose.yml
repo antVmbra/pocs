@@ -16,8 +16,10 @@ services:
     networks:
       - app_network
   webapp:
-    container_name: keycloack_web
+    container_name: keycloak_web
     image: keycloak-poc
+    depends_on:
+      - keycloak
     links:
       - mongodb
       - keycloak
