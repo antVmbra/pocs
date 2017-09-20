@@ -1,0 +1,51 @@
+{
+  "variables": {
+    "aws_access_key":"",
+    "aws_secret_key":"",
+    "jar_name":""
+  },
+  "builders": [
+    {
+      "type": "docker",
+      "image": "openjdk:8",
+      "author": "Mario Valentim <mario.valentim@shinesolutions.com>",
+      "commit": true,
+      "changes": [
+        "ENTRYPOINT /home/start.sh"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./target/{{user `jar_name`}}",
+      "destination": "/home/{{user `jar_name`}}"
+    },
+    {
+      "type": "file",
+      "source": "./realm_creation.py",
+      "destination": "/home/realm_creation.py"
+    },
+    {
+      "type": "file",
+      "source": "./demo_realm.json",
+      "destination": "/home/demo_realm.json"
+    },
+    {
+      "type": "file",
+      "source": "./start.sh",
+      "destination": "/home/start.sh"
+    },
+    {
+      "type": "shell",
+      "inline": ["apt-get update","apt-get install -y python-pip","pip install requests"]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "docker-tag",
+      "repository": "keycloak-poc",
+      "tag": "latest"
+    }
+  ]
+}
