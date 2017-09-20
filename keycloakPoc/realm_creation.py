@@ -1,6 +1,6 @@
-import requests, json, time
+import requests, json, time, os
 
-url = "http://keycloakpoc_keycloakserver:8080"
+url = "http://keycloakpoc_keycloakserver:" + os.getenv("KEYCLOAK_PORT")
 result = None
 print('Waiting on Keycloak to be up')
 while result is None:
